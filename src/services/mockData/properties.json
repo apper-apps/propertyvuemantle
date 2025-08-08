@@ -19,7 +19,9 @@
     ],
     "description": "Stunning penthouse with panoramic city views, modern amenities, and premium finishes throughout. Floor-to-ceiling windows flood the space with natural light.",
     "amenities": ["City Views", "Hardwood Floors", "Modern Kitchen", "Balcony", "Parking", "Gym"],
+    "propertyFeatures": ["Fireplace", "Balcony", "Swimming Pool", "Garage"],
     "yearBuilt": 2018,
+    "hoaFees": 450,
     "latitude": 37.7749,
     "longitude": -122.4194,
     "isFavorite": false
@@ -44,7 +46,9 @@
     ],
     "description": "Beautifully restored Victorian home with original details, updated kitchen, and landscaped garden. Perfect blend of historic charm and modern convenience.",
     "amenities": ["Garden", "Fireplace", "Updated Kitchen", "Original Details", "Garage", "Basement"],
+    "propertyFeatures": ["Fireplace", "Garage", "Garden", "Basement"],
     "yearBuilt": 1895,
+    "hoaFees": 0,
     "latitude": 45.5152,
     "longitude": -122.6784,
     "isFavorite": true
@@ -69,7 +73,9 @@
     ],
     "description": "Elegant waterfront condo with breathtaking views of the Sound. Features luxury finishes, chef's kitchen, and access to resort-style amenities.",
     "amenities": ["Water Views", "Luxury Finishes", "Chef's Kitchen", "Concierge", "Pool", "Spa"],
+    "propertyFeatures": ["Balcony", "Swimming Pool", "Spa", "Concierge"],
     "yearBuilt": 2020,
+    "hoaFees": 680,
     "latitude": 47.6062,
     "longitude": -122.3321,
     "isFavorite": false
@@ -94,7 +100,9 @@
     ],
     "description": "Well-maintained townhouse in quiet neighborhood. Features open floor plan, modern appliances, and private patio. Perfect for families.",
     "amenities": ["Open Floor Plan", "Private Patio", "Modern Appliances", "Quiet Neighborhood", "Storage", "Laundry"],
+    "propertyFeatures": ["Patio", "Laundry Room", "Storage"],
     "yearBuilt": 2010,
+    "hoaFees": 125,
     "latitude": 30.2672,
     "longitude": -97.7431,
     "isFavorite": false
@@ -119,7 +127,9 @@
     ],
     "description": "Stunning ranch home with panoramic mountain views. Features vaulted ceilings, stone fireplace, and expansive deck perfect for entertaining.",
     "amenities": ["Mountain Views", "Vaulted Ceilings", "Stone Fireplace", "Large Deck", "3-Car Garage", "Wine Cellar"],
+    "propertyFeatures": ["Fireplace", "Garage", "Wine Cellar", "Deck"],
     "yearBuilt": 2015,
+    "hoaFees": 0,
     "latitude": 39.7392,
     "longitude": -104.9903,
     "isFavorite": true
@@ -144,7 +154,9 @@
     ],
     "description": "Trendy loft in converted warehouse with exposed brick walls, high ceilings, and modern amenities. Walking distance to subway and restaurants.",
     "amenities": ["Exposed Brick", "High Ceilings", "Modern Kitchen", "Near Transit", "Warehouse Style", "Hardwood Floors"],
+    "propertyFeatures": ["High Ceilings", "Exposed Brick"],
     "yearBuilt": 2008,
+    "hoaFees": 0,
     "latitude": 40.6982,
     "longitude": -73.9942,
     "isFavorite": false
@@ -169,7 +181,9 @@
     ],
     "description": "Spectacular beachfront villa with direct beach access. Features infinity pool, gourmet kitchen, and panoramic ocean views from every room.",
     "amenities": ["Beach Access", "Infinity Pool", "Ocean Views", "Gourmet Kitchen", "Private Beach", "Guest House"],
+    "propertyFeatures": ["Swimming Pool", "Beach Access", "Guest House"],
     "yearBuilt": 2017,
+    "hoaFees": 0,
     "latitude": 25.7617,
     "longitude": -80.1918,
     "isFavorite": true
@@ -194,7 +208,9 @@
     ],
     "description": "Beautifully preserved brownstone in prestigious Back Bay. Features original architectural details, modern updates, and private garden.",
     "amenities": ["Historic Details", "Private Garden", "Updated Systems", "Prestigious Location", "Original Moldings", "Parking"],
+    "propertyFeatures": ["Garden", "Garage", "Historic Features"],
     "yearBuilt": 1885,
+    "hoaFees": 0,
     "latitude": 42.3601,
     "longitude": -71.0589,
     "isFavorite": false
@@ -219,7 +235,9 @@
     ],
     "description": "Contemporary desert home with clean lines and stunning mountain views. Features solar panels, drought-resistant landscaping, and infinity pool.",
     "amenities": ["Mountain Views", "Solar Panels", "Infinity Pool", "Modern Design", "Desert Landscaping", "Energy Efficient"],
+    "propertyFeatures": ["Swimming Pool", "Solar Panels", "Energy Efficient"],
     "yearBuilt": 2019,
+    "hoaFees": 0,
     "latitude": 33.4942,
     "longitude": -111.9261,
     "isFavorite": false

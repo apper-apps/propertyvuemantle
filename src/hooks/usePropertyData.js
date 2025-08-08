@@ -7,11 +7,11 @@ const usePropertyData = (initialFilters = {}) => {
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [filters, setFilters] = useState(initialFilters);
+const [filters, setFilters] = useState(initialFilters);
   const [favorites, setFavorites] = useState([]);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [amenities, setAmenities] = useState([]);
-
+  const [propertyFeatures, setPropertyFeatures] = useState([]);
   const loadProperties = useCallback(async (searchQuery = "") => {
     setLoading(true);
     setError(null);
@@ -60,7 +60,7 @@ const usePropertyData = (initialFilters = {}) => {
     }
   }, []);
 
-  const loadAmenities = useCallback(async () => {
+const loadAmenities = useCallback(async () => {
     try {
       const amenitiesList = propertyService.getAllAmenities();
       setAmenities(amenitiesList);
@@ -69,6 +69,14 @@ const usePropertyData = (initialFilters = {}) => {
     }
   }, []);
 
+  const loadPropertyFeatures = useCallback(async () => {
+    try {
+      const featuresList = propertyService.getPropertyFeatures();
+      setPropertyFeatures(featuresList);
+    } catch (err) {
+      console.error("Failed to load property features:", err);
+    }
+  }, []);
   const toggleFavorite = useCallback(async (propertyId) => {
     try {
       const updatedProperty = await propertyService.toggleFavorite(propertyId);
@@ -168,13 +176,14 @@ const usePropertyData = (initialFilters = {}) => {
   }, [loadProperties]);
 
   // Initialize data
-  useEffect(() => {
+useEffect(() => {
     loadProperties();
     loadPropertyTypes();
     loadAmenities();
-  }, [loadProperties, loadPropertyTypes, loadAmenities]);
+    loadPropertyFeatures();
+  }, [loadProperties, loadPropertyTypes, loadAmenities, loadPropertyFeatures]);
 
-  return {
+return {
     properties: filteredProperties,
     favorites,
     loading,
@@ -182,6 +191,7 @@ const usePropertyData = (initialFilters = {}) => {
     filters,
     propertyTypes,
     amenities,
+    propertyFeatures,
     toggleFavorite,
     applyFilters,
     clearFilters,

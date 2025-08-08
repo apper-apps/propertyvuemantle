@@ -9,7 +9,9 @@ const PropertyFilter = ({
   onFiltersChange, 
   propertyTypes = [],
   amenities = [],
-  priceRange = { min: 0, max: 5000000 }
+  propertyFeatures = [],
+  priceRange = { min: 0, max: 5000000 },
+  yearRange = { min: 1800, max: new Date().getFullYear() }
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +30,7 @@ const PropertyFilter = ({
     updateFilter("propertyType", newTypes);
   };
 
-  const toggleAmenity = (amenity) => {
+const toggleAmenity = (amenity) => {
     const currentAmenities = filters.amenities || [];
     const newAmenities = currentAmenities.includes(amenity)
       ? currentAmenities.filter(a => a !== amenity)
@@ -36,6 +38,24 @@ const PropertyFilter = ({
     updateFilter("amenities", newAmenities);
   };
 
+  const togglePropertyFeature = (feature) => {
+    const currentFeatures = filters.propertyFeatures || [];
+    const newFeatures = currentFeatures.includes(feature)
+      ? currentFeatures.filter(f => f !== feature)
+      : [...currentFeatures, feature];
+    updateFilter("propertyFeatures", newFeatures);
+  };
+
+  const [amenitySearch, setAmenitySearch] = useState("");
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
+
+  const filteredAmenities = amenities.filter(amenity =>
+    amenity.toLowerCase().includes(amenitySearch.toLowerCase())
+  );
+
+  const displayedAmenities = showAllAmenities 
+    ? filteredAmenities 
+    : filteredAmenities.slice(0, 8);
   const clearAllFilters = () => {
     onFiltersChange({});
   };
@@ -100,7 +120,7 @@ const PropertyFilter = ({
           />
         </div>
 
-        {/* Bedrooms */}
+{/* Bedrooms */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-3">
             Bedrooms
@@ -131,7 +151,68 @@ const PropertyFilter = ({
           </div>
         </div>
 
+        {/* Year Built */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">
+            Year Built
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Select
+                value={filters.minYear || ""}
+                onChange={(e) => updateFilter("minYear", e.target.value ? parseInt(e.target.value) : null)}
+              >
+                <option value="">Min year</option>
+                {Array.from({length: 15}, (_, i) => {
+                  const year = new Date().getFullYear() - (i * 10);
+                  return <option key={year} value={year}>{year}+</option>
+                })}
+              </Select>
+            </div>
+            <div>
+              <Select
+                value={filters.maxYear || ""}
+                onChange={(e) => updateFilter("maxYear", e.target.value ? parseInt(e.target.value) : null)}
+              >
+                <option value="">Max year</option>
+                {Array.from({length: 15}, (_, i) => {
+                  const year = new Date().getFullYear() - (i * 10);
+                  return <option key={year} value={year}>{year}</option>
+                })}
+              </Select>
+            </div>
+          </div>
+        </div>
+
+        {/* HOA Fees */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">
+            HOA Fees (Monthly)
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <input
+                type="number"
+                placeholder="Min HOA"
+                value={filters.minHoaFees || ""}
+                onChange={(e) => updateFilter("minHoaFees", e.target.value ? parseInt(e.target.value) : null)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+              />
+            </div>
+            <div>
+              <input
+                type="number"
+                placeholder="Max HOA"
+                value={filters.maxHoaFees || ""}
+                onChange={(e) => updateFilter("maxHoaFees", e.target.value ? parseInt(e.target.value) : null)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Property Type */}
+{/* Property Type */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-3">
             Property Type
@@ -151,13 +232,45 @@ const PropertyFilter = ({
           </div>
         </div>
 
-        {/* Popular Amenities */}
+        {/* Property Features */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-3">
-            Popular Amenities
+            Property Features
           </label>
+          <div className="space-y-2">
+            {propertyFeatures.map(feature => (
+              <label key={feature} className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={(filters.propertyFeatures || []).includes(feature)}
+                  onChange={() => togglePropertyFeature(feature)}
+                  className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
+                <span className="ml-2 text-sm text-gray-700">{feature}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Amenities */}
+<div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">
+            Amenities
+          </label>
+          
+          {/* Search amenities */}
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Search amenities..."
+              value={amenitySearch}
+              onChange={(e) => setAmenitySearch(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+            />
+          </div>
+          
           <div className="space-y-2 max-h-48 overflow-y-auto">
-            {amenities.slice(0, 10).map(amenity => (
+            {displayedAmenities.map(amenity => (
               <label key={amenity} className="flex items-center">
                 <input
                   type="checkbox"
@@ -169,6 +282,15 @@ const PropertyFilter = ({
               </label>
             ))}
           </div>
+          
+          {filteredAmenities.length > 8 && (
+            <button
+              onClick={() => setShowAllAmenities(!showAllAmenities)}
+              className="mt-2 text-sm text-primary-600 hover:text-primary-700 font-medium"
+            >
+              {showAllAmenities ? 'Show Less' : `Show All (${filteredAmenities.length})`}
+            </button>
+          )}
         </div>
       </div>
     </div>

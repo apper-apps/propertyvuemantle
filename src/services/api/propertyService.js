@@ -22,7 +22,7 @@ class PropertyService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async getAll(filters = {}) {
+async getAll(filters = {}) {
     await this.delay();
     let filteredProperties = [...this.properties];
 
@@ -60,6 +60,30 @@ class PropertyService {
       );
     }
 
+    if (filters.minYear) {
+      filteredProperties = filteredProperties.filter(property => 
+        property.yearBuilt >= filters.minYear
+      );
+    }
+
+    if (filters.maxYear) {
+      filteredProperties = filteredProperties.filter(property => 
+        property.yearBuilt <= filters.maxYear
+      );
+    }
+
+    if (filters.minHoaFees !== null && filters.minHoaFees !== undefined) {
+      filteredProperties = filteredProperties.filter(property => 
+        (property.hoaFees || 0) >= filters.minHoaFees
+      );
+    }
+
+    if (filters.maxHoaFees !== null && filters.maxHoaFees !== undefined) {
+      filteredProperties = filteredProperties.filter(property => 
+        (property.hoaFees || 0) <= filters.maxHoaFees
+      );
+    }
+
     if (filters.propertyType && filters.propertyType.length > 0) {
       filteredProperties = filteredProperties.filter(property => 
         filters.propertyType.includes(property.propertyType)
@@ -69,6 +93,14 @@ class PropertyService {
     if (filters.amenities && filters.amenities.length > 0) {
       filteredProperties = filteredProperties.filter(property => 
         filters.amenities.some(amenity => property.amenities.includes(amenity))
+      );
+    }
+
+    if (filters.propertyFeatures && filters.propertyFeatures.length > 0) {
+      filteredProperties = filteredProperties.filter(property => 
+        filters.propertyFeatures.some(feature => 
+          (property.propertyFeatures || []).includes(feature)
+        )
       );
     }
 
@@ -124,11 +156,37 @@ class PropertyService {
     return [...new Set(allAmenities)].sort();
   }
 
-  getPriceRange() {
+getPriceRange() {
     const prices = this.properties.map(p => p.price);
     return {
       min: Math.min(...prices),
       max: Math.max(...prices)
+    };
+  }
+
+  getPropertyFeatures() {
+    const allFeatures = this.properties.reduce((features, property) => {
+      if (property.propertyFeatures) {
+        return [...features, ...property.propertyFeatures];
+      }
+      return features;
+    }, []);
+    return [...new Set(allFeatures)].sort();
+  }
+
+  getYearRange() {
+    const years = this.properties.map(p => p.yearBuilt).filter(year => year);
+    return {
+      min: Math.min(...years),
+      max: Math.max(...years)
+    };
+  }
+
+  getHoaRange() {
+    const hoaFees = this.properties.map(p => p.hoaFees || 0);
+    return {
+      min: Math.min(...hoaFees),
+      max: Math.max(...hoaFees)
     };
   }
 }

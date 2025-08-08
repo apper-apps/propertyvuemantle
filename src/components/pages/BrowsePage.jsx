@@ -8,13 +8,14 @@ import usePropertyData from "@/hooks/usePropertyData";
 
 const BrowsePage = ({ searchQuery }) => {
   const [viewMode, setViewMode] = useState("grid"); // grid or list
-  const {
+const {
     properties,
     loading,
     error,
     filters,
     propertyTypes,
     amenities,
+    propertyFeatures,
     toggleFavorite,
     applyFilters,
     clearFilters,
@@ -28,7 +29,7 @@ const BrowsePage = ({ searchQuery }) => {
     }
   }, [searchQuery, searchProperties]);
 
-  const getFilterSummary = () => {
+const getFilterSummary = () => {
     const summary = [];
     
     if (filters.minPrice || filters.maxPrice) {
@@ -44,6 +45,18 @@ const BrowsePage = ({ searchQuery }) => {
     if (filters.maxBeds) {
       summary.push(`${filters.maxBeds} beds max`);
     }
+
+    if (filters.minYear || filters.maxYear) {
+      const minYear = filters.minYear || "Any";
+      const maxYear = filters.maxYear || new Date().getFullYear();
+      summary.push(`Built: ${minYear} - ${maxYear}`);
+    }
+
+    if (filters.minHoaFees || filters.maxHoaFees) {
+      const minHoa = filters.minHoaFees ? `$${filters.minHoaFees}` : "$0";
+      const maxHoa = filters.maxHoaFees ? `$${filters.maxHoaFees}` : "Any";
+      summary.push(`HOA: ${minHoa} - ${maxHoa}`);
+    }
     
     if (filters.propertyType && filters.propertyType.length > 0) {
       summary.push(...filters.propertyType.map(type => `Type: ${type}`));
@@ -52,11 +65,15 @@ const BrowsePage = ({ searchQuery }) => {
     if (filters.amenities && filters.amenities.length > 0) {
       summary.push(...filters.amenities.map(amenity => `${amenity}`));
     }
+
+    if (filters.propertyFeatures && filters.propertyFeatures.length > 0) {
+      summary.push(...filters.propertyFeatures.map(feature => `Feature: ${feature}`));
+    }
     
     return summary;
   };
 
-  const removeFilter = (filterToRemove) => {
+const removeFilter = (filterToRemove) => {
     const newFilters = { ...filters };
     
     if (filterToRemove.startsWith("Price:")) {
@@ -68,9 +85,18 @@ const BrowsePage = ({ searchQuery }) => {
       } else {
         delete newFilters.minBeds;
       }
+    } else if (filterToRemove.startsWith("Built:")) {
+      delete newFilters.minYear;
+      delete newFilters.maxYear;
+    } else if (filterToRemove.startsWith("HOA:")) {
+      delete newFilters.minHoaFees;
+      delete newFilters.maxHoaFees;
     } else if (filterToRemove.startsWith("Type:")) {
       const type = filterToRemove.replace("Type: ", "");
       newFilters.propertyType = (newFilters.propertyType || []).filter(t => t !== type);
+    } else if (filterToRemove.startsWith("Feature:")) {
+      const feature = filterToRemove.replace("Feature: ", "");
+      newFilters.propertyFeatures = (newFilters.propertyFeatures || []).filter(f => f !== feature);
     } else {
       // It's an amenity
       newFilters.amenities = (newFilters.amenities || []).filter(a => a !== filterToRemove);
@@ -87,10 +113,11 @@ const BrowsePage = ({ searchQuery }) => {
         {/* Sidebar - Filter */}
         <div className="lg:w-80 flex-shrink-0">
           <PropertyFilter
-            filters={filters}
+filters={filters}
             onFiltersChange={applyFilters}
             propertyTypes={propertyTypes}
             amenities={amenities}
+            propertyFeatures={propertyFeatures}
           />
         </div>
 
