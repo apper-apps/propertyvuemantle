@@ -28,9 +28,9 @@ const Header = ({ onSearch, favoritesCount = 0 }) => {
           <Link to="/" className="flex items-center gap-2 group">
             <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-2 rounded-xl group-hover:shadow-lg transition-all duration-200">
               <ApperIcon name="Home" size={24} className="text-white" />
-            </div>
+</div>
             <span className="font-display font-bold text-xl text-gray-900 group-hover:text-primary-600 transition-colors">
-              PropertyVue
+              PropertyVue Pro
             </span>
           </Link>
 
