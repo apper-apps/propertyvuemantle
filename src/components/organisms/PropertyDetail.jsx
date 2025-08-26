@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import ApperIcon from "@/components/ApperIcon";
 import Badge from "@/components/atoms/Badge";
 import Button from "@/components/atoms/Button";
+import Lightbox from "@/components/organisms/Lightbox";
 import { motion } from "framer-motion";
-
 const PropertyDetail = ({ property, onToggleFavorite }) => {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
   const formatPrice = (price) => {
     if (property.listingType === "For Rent") {
       return `$${price.toLocaleString()}/month`;
@@ -17,25 +20,58 @@ const PropertyDetail = ({ property, onToggleFavorite }) => {
     alert("Contact functionality would be implemented here");
   };
 
+  const openLightbox = (index) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       {/* Image Gallery */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
         <div className="lg:col-span-2">
-          <img
-            src={property.images[0]}
-            alt={property.title}
-            className="w-full h-96 object-cover rounded-xl shadow-card"
-          />
+          <motion.div
+            className="relative group cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => openLightbox(0)}
+          >
+            <img
+              src={property.images[0]}
+              alt={property.title}
+              className="w-full h-96 object-cover rounded-xl shadow-card transition-all duration-300 group-hover:shadow-card-hover"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-xl flex items-center justify-center">
+              <div className="bg-white bg-opacity-20 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <ApperIcon name="Expand" size={24} className="text-white" />
+              </div>
+            </div>
+          </motion.div>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
           {property.images.slice(1, 3).map((image, index) => (
-            <img
+            <motion.div
               key={index}
-              src={image}
-              alt={`${property.title} - Image ${index + 2}`}
-              className="w-full h-44 lg:h-44 object-cover rounded-xl shadow-card"
-            />
+              className="relative group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => openLightbox(index + 1)}
+            >
+              <img
+                src={image}
+                alt={`${property.title} - Image ${index + 2}`}
+                className="w-full h-44 lg:h-44 object-cover rounded-xl shadow-card transition-all duration-300 group-hover:shadow-card-hover"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-xl flex items-center justify-center">
+                <div className="bg-white bg-opacity-20 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <ApperIcon name="Expand" size={20} className="text-white" />
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -196,6 +232,27 @@ const PropertyDetail = ({ property, onToggleFavorite }) => {
           </motion.div>
         </div>
       </div>
+{/* View All Photos Button */}
+      {property.images.length > 3 && (
+        <div className="mt-6">
+          <Button
+            onClick={() => openLightbox(0)}
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
+            <ApperIcon name="Image" size={18} className="mr-2" />
+            View All {property.images.length} Photos
+          </Button>
+        </div>
+      )}
+
+      {/* Lightbox */}
+      <Lightbox
+        images={property.images}
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        initialIndex={lightboxIndex}
+      />
     </div>
   );
 };
