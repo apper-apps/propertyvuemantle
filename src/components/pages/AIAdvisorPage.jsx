@@ -28,13 +28,24 @@ const AIAdvisorPage = () => {
     };
 
     loadProperties();
+if (!window.ApperSDK) {
+      setError('AI Advisor service is unavailable. Please refresh the page or contact support.');
+      setLoading(false);
+      return;
+    }
 
-    const { ApperClient } = window.ApperSDK;
-    const client = new ApperClient({
-      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-    });
-    setApperClient(client);
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const client = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+      setApperClient(client);
+    } catch (err) {
+      setError('Failed to initialize AI Advisor service. Please try again.');
+      setLoading(false);
+      console.error('ApperClient initialization error:', err);
+    }
   }, []);
 
   const toggleFavorite = async (propertyId) => {
