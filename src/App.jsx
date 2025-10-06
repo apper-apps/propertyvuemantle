@@ -6,6 +6,7 @@ import BrowsePage from "@/components/pages/BrowsePage";
 import PropertyDetailPage from "@/components/pages/PropertyDetailPage";
 import MapPage from "@/components/pages/MapPage";
 import FavoritesPage from "@/components/pages/FavoritesPage";
+import AIAdvisorPage from "@/components/pages/AIAdvisorPage";
 import propertyService from "@/services/api/propertyService";
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
               path="/favorites" 
               element={<FavoritesPage />} 
             />
+<Route path="/ai-advisor" element={<AIAdvisorPage />} />
           </Routes>
         </main>
         

@@ -11,7 +11,8 @@ const Header = ({ onSearch, favoritesCount = 0 }) => {
   const navigation = [
     { name: "Browse", href: "/", icon: "Home" },
     { name: "Map View", href: "/map", icon: "Map" },
-    { name: "Favorites", href: "/favorites", icon: "Heart" }
+{ name: "Favorites", href: "/favorites", icon: "Heart" },
+    { name: "AI Advisor", href: "/ai-advisor", icon: "Sparkles" }
   ];
 
   const isActive = (path) => {
@@ -35,7 +36,7 @@ const Header = ({ onSearch, favoritesCount = 0 }) => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6">
+<nav className="hidden lg:flex items-center gap-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -77,7 +78,7 @@ const Header = ({ onSearch, favoritesCount = 0 }) => {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
+{isMobileMenuOpen && (
           <div className="lg:hidden border-t border-gray-200 py-4">
             <nav className="flex flex-col gap-2">
               {navigation.map((item) => (
